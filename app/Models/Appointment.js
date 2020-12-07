@@ -17,15 +17,9 @@ class Appointment extends Model {
     // MeuErro.prototype.constructor = MeuErro;
 
     this.addHook('beforeSave', async (appointmentInstance) => {
-      var meuteste;
-
-      console.log(meuteste);
       const delegateError = () => {
-        throw new Error('deu erro');
-
-        meuteste = true;
+        throw new Error('Não será possível agendar neste horário');
       };
-      // delegateError();
       var startLimit;
       var endLimit;
       // hour is like July 28 2020 07:30
@@ -48,8 +42,8 @@ class Appointment extends Model {
         const picked = new Date(appointment.picked_date);
         const date = moment(picked);
 
-        startLimit = moment(date).subtract(31, 'minutes');
-        endLimit = moment(date).add(31, 'minutes');
+        startLimit = moment(date).subtract(0, 'minutes');
+        endLimit = moment(date).add(60, 'minutes');
 
         moment(appointmentInstance.picked_date).isBetween(startLimit, endLimit)
           ? delegateError()
