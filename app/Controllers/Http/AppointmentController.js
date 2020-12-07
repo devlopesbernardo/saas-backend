@@ -25,7 +25,7 @@ class AppointmentController {
     try {
       await createAppointment();
     } catch (e) {
-      response.status(401).send('Neste horário, já existem marcações');
+      response.status(401).send(e.message);
     }
   }
 
@@ -38,7 +38,7 @@ class AppointmentController {
       .fetch();
 
     await appointments.toJSON().map((appointment) => {
-      appointmentsArray.push(moment.utc(appointment.picked_date));
+      appointmentsArray.push(moment(appointment.picked_date).toLocaleString());
     });
     return appointmentsArray;
   }

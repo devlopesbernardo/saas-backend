@@ -18,7 +18,7 @@ class Appointment extends Model {
 
     this.addHook('beforeSave', async (appointmentInstance) => {
       const delegateError = () => {
-        throw new Error('Não será possível agendar neste horário');
+        throw new Error('Neste horário, já existem marcações');
       };
       var startLimit;
       var endLimit;
@@ -48,12 +48,6 @@ class Appointment extends Model {
         moment(appointmentInstance.picked_date).isBetween(startLimit, endLimit)
           ? delegateError()
           : null;
-
-        // if (moment(data_pega).isBetween(startLimit, endLimit)) {
-        //   return delegateError();
-        //   console.log(`${moment(data_pega)} Está no meio!`);
-        //   console.log(2);
-        // }
       });
     });
   }
